@@ -10,15 +10,29 @@ impl ThrobberState {
         self.index
     }
 
-    pub fn calc_next(&mut self, throbber: &Throbber, step: i8) {
-        let len = throbber.throbber_set.symbols.len() as i8;
-        self.index = if len <= 0 {
-            0
-        } else if step == 0 {
+    pub fn calc_next(&mut self) {
+        self.calc_step(1);
+    }
+
+    pub fn calc_step(&mut self, step: i8) {
+        self.index = if step == 0 {
             let mut rng = rand::thread_rng();
-            rng.gen_range(0..len)
+            rng.gen_range(0..std::i8::MAX)
         } else {
-            (self.index + step) % len
+            self.index + step
+        }
+    }
+
+    pub fn normalize(&mut self, throbber: &Throbber) {
+        let len = throbber.throbber_set.symbols.len() as i8;
+        if 0 <= self.index && self.index < len {
+            //ok
+        } else if len <= 0 {
+            //ng
+        } else if self.index < 0 {
+            self.index = -self.index % len;
+        } else {
+            self.index = self.index % len;
         }
     }
 }
@@ -94,7 +108,7 @@ impl<'a> Throbber<'a> {
 impl<'a> tui::widgets::Widget for Throbber<'a> {
     fn render(self, area: tui::layout::Rect, buf: &mut tui::buffer::Buffer) {
         let mut state = ThrobberState::default();
-        state.calc_next(&self, 0);
+        state.calc_step(0);
         tui::widgets::StatefulWidget::render(self, area, buf, &mut state);
     }
 }
@@ -102,7 +116,12 @@ impl<'a> tui::widgets::Widget for Throbber<'a> {
 impl<'a> tui::widgets::StatefulWidget for Throbber<'a> {
     type State = ThrobberState;
 
-    fn render(self, area: tui::layout::Rect, buf: &mut tui::buffer::Buffer, state: &mut Self::State) {
+    fn render(
+        self,
+        area: tui::layout::Rect,
+        buf: &mut tui::buffer::Buffer,
+        state: &mut Self::State,
+    ) {
         buf.set_style(area, self.style);
 
         let throbber_area = area;
@@ -115,6 +134,7 @@ impl<'a> tui::widgets::StatefulWidget for Throbber<'a> {
             crate::symbols::throbber::WhichUse::Full => self.throbber_set.full,
             crate::symbols::throbber::WhichUse::Empty => self.throbber_set.empty,
             crate::symbols::throbber::WhichUse::Spin => {
+                state.normalize(&self);
                 let len = self.throbber_set.symbols.len() as i8;
                 if 0 <= state.index && state.index < len {
                     self.throbber_set.symbols[state.index as usize]

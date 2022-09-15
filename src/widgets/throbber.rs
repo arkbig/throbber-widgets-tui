@@ -1,36 +1,50 @@
 use rand::Rng as _;
 
+/// State to be used for Throbber render.
 #[derive(Debug, Clone, Default)]
 pub struct ThrobberState {
+    /// Index of Set.symbols used when Spin is specified for WhichUse.
+    ///
+    /// If out of range, it is normalized at render time.
     index: i8,
 }
 
 impl ThrobberState {
+    /// Get a index.
     pub fn index(&self) -> i8 {
         self.index
     }
 
+    /// Increase index.
     pub fn calc_next(&mut self) {
         self.calc_step(1);
     }
 
+    /// Calculate the index by specifying step.
+    ///
+    /// If step is 0, the index is determined at random.
+    ///
+    /// Negative numbers can also be specified for step.
     pub fn calc_step(&mut self, step: i8) {
         self.index = if step == 0 {
             let mut rng = rand::thread_rng();
-            rng.gen_range(0..std::i8::MAX)
+            rng.gen()
         } else {
             self.index + step
         }
     }
 
+    /// Set the index to the range of throbber_set.symbols.len().
     pub fn normalize(&mut self, throbber: &Throbber) {
         let len = throbber.throbber_set.symbols.len() as i8;
         if 0 <= self.index && self.index < len {
             //ok
         } else if len <= 0 {
-            //ng
+            //ng but it's not used, so it stays.
         } else if self.index < 0 {
-            self.index = -self.index % len;
+            //The modulus of a negative number is assumed to be a negative number.
+            //ex) -5 % 3 => -2
+            self.index = -(self.index % len);
         } else {
             self.index = self.index % len;
         }
@@ -105,6 +119,7 @@ impl<'a> Throbber<'a> {
     }
 }
 
+/// Render random step symbols.
 impl<'a> tui::widgets::Widget for Throbber<'a> {
     fn render(self, area: tui::layout::Rect, buf: &mut tui::buffer::Buffer) {
         let mut state = ThrobberState::default();
@@ -113,6 +128,7 @@ impl<'a> tui::widgets::Widget for Throbber<'a> {
     }
 }
 
+/// Render specified index symbols.
 impl<'a> tui::widgets::StatefulWidget for Throbber<'a> {
     type State = ThrobberState;
 

@@ -16,15 +16,35 @@ impl ThrobberState {
     }
 
     /// Increase index.
+    /// 
+    /// # Examples:
+    /// ```
+    /// let mut throbber_state = throbber_widgets_tui::ThrobberState::default();
+    /// assert_eq!(throbber_state.index(), 0);
+    /// throbber_state.calc_next();
+    /// assert_eq!(throbber_state.index(), 1);
+    /// ```
     pub fn calc_next(&mut self) {
         self.calc_step(1);
     }
 
     /// Calculate the index by specifying step.
     ///
-    /// If step is 0, the index is determined at random.
-    ///
     /// Negative numbers can also be specified for step.
+    ///
+    /// If step is 0, the index is determined at random.
+    /// 
+    /// # Examples:
+    /// ```
+    /// let mut throbber_state = throbber_widgets_tui::ThrobberState::default();
+    /// assert_eq!(throbber_state.index(), 0);
+    /// throbber_state.calc_step(2);
+    /// assert_eq!(throbber_state.index(), 2);
+    /// throbber_state.calc_step(-3);
+    /// assert_eq!(throbber_state.index(), -1); 
+    /// throbber_state.calc_step(0); // random
+    /// assert!((std::i8::MIN..=std::i8::MAX).contains(&throbber_state.index()))
+    /// ```
     pub fn calc_step(&mut self, step: i8) {
         self.index = if step == 0 {
             let mut rng = rand::thread_rng();
@@ -35,6 +55,29 @@ impl ThrobberState {
     }
 
     /// Set the index to the range of throbber_set.symbols.len().
+    /// 
+    /// This is called from render function automatically.
+    /// 
+    /// # Examples:
+    /// ```
+    /// let mut throbber_state = throbber_widgets_tui::ThrobberState::default();
+    /// let throbber = throbber_widgets_tui::Throbber::default();
+    /// let len = 6; //throbber.throbber_set.symbols.len() as i8;
+    ///
+    /// throbber_state.normalize(&throbber);
+    /// assert_eq!(throbber_state.index(), 0);
+    /// 
+    /// throbber_state.calc_step(len + 2);
+    /// assert_eq!(throbber_state.index(), len + 2);
+    /// throbber_state.normalize(&throbber);
+    /// assert_eq!(throbber_state.index(), 2);
+    /// 
+    /// // Negative numbers are indexed from backward
+    /// throbber_state.calc_step(-3 - len);
+    /// assert_eq!(throbber_state.index(), -1 - len);
+    /// throbber_state.normalize(&throbber);
+    /// assert_eq!(throbber_state.index(), len - 1);
+    /// ```
     pub fn normalize(&mut self, throbber: &Throbber) {
         let len = throbber.throbber_set.symbols.len() as i8;
         if 0 <= self.index && self.index < len {
@@ -42,9 +85,8 @@ impl ThrobberState {
         } else if len <= 0 {
             //ng but it's not used, so it stays.
         } else if self.index < 0 {
-            //The modulus of a negative number is assumed to be a negative number.
-            //ex) -5 % 3 => -2
-            self.index = -(self.index % len);
+            // Negative numbers are indexed from the tail
+            self.index = len + (self.index % len);
         } else {
             self.index = self.index % len;
         }
@@ -63,10 +105,12 @@ impl ThrobberState {
 /// # Examples:
 ///
 /// ```
-/// Throbber::default()
-///     .throbber_style(Style::default().fg(Color::White).bg(Color::Black))
-///     .throbber_set(symbols::throbber::BRAILLE_SIX)
+/// let throbber = throbber_widgets_tui::Throbber::default()
+///     .throbber_style(tui::style::Style::default().fg(tui::style::Color::White).bg(tui::style::Color::Black))
 ///     .label("NOW LOADING...");
+/// // frame.render_widget(throbber, chunks[0]);
+/// let throbber_state = throbber_widgets_tui::ThrobberState::default();
+/// // frame.render_stateful_widget(throbber, chunks[0], &mut throbber_state);
 /// ```
 #[derive(Debug, Clone)]
 pub struct Throbber<'a> {
@@ -119,8 +163,8 @@ impl<'a> Throbber<'a> {
     }
 }
 
-/// Render random step symbols.
 impl<'a> tui::widgets::Widget for Throbber<'a> {
+    /// Render random step symbols.
     fn render(self, area: tui::layout::Rect, buf: &mut tui::buffer::Buffer) {
         let mut state = ThrobberState::default();
         state.calc_step(0);
@@ -128,10 +172,10 @@ impl<'a> tui::widgets::Widget for Throbber<'a> {
     }
 }
 
-/// Render specified index symbols.
 impl<'a> tui::widgets::StatefulWidget for Throbber<'a> {
     type State = ThrobberState;
-
+    
+    /// Render specified index symbols.
     fn render(
         self,
         area: tui::layout::Rect,
@@ -174,5 +218,56 @@ impl<'a> tui::widgets::StatefulWidget for Throbber<'a> {
             }
             buf.set_span(col, row, &label, label.width() as u16);
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn throbber_state_calc_step() {
+        let mut throbber_state = ThrobberState::default();
+        assert_eq!(throbber_state.index(), 0);
+
+        // random test
+        // The probability of failure is not zero, but it is as low as possible.
+        let mut difference = false;
+        for _ in 0..100 {
+            throbber_state.calc_step(0);
+            assert!((std::i8::MIN..=std::i8::MAX).contains(&throbber_state.index()));
+
+            if 0 != throbber_state.index() {
+                difference = true;
+            }
+        }
+        assert!(difference);
+    }
+
+    #[test]
+    fn throbber_state_normalize() {
+        let mut throbber_state = ThrobberState::default();
+        let throbber = Throbber::default();
+        let len = throbber.throbber_set.symbols.len() as i8;
+        let max = len - 1;
+
+        // check upper
+        throbber_state.calc_step(max);
+        throbber_state.normalize(&throbber);
+        assert_eq!(throbber_state.index(), max);
+
+        // check overflow
+        throbber_state.calc_next();
+        throbber_state.normalize(&throbber);
+        assert_eq!(throbber_state.index(), 0);
+
+        // check underflow
+        throbber_state.calc_step(-1);
+        throbber_state.normalize(&throbber);
+        assert_eq!(throbber_state.index(), max);
+
+        // check negative out of range
+        throbber_state.calc_step(len * -2);
+        throbber_state.normalize(&throbber);
+        assert_eq!(throbber_state.index(), max);
     }
 }

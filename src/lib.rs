@@ -26,7 +26,7 @@
 //!
 //! - Render throbber
 //! - With label
-//! - Random or specified step
+//! - Random or specified step, also negative is possible.
 //!
 //! ## Getting Started
 //!
@@ -35,15 +35,31 @@
 //! ```
 //!
 //! ```rust
-//! :
+//! // :
+//! // :
+//! struct App {
+//!     throbber_state: throbber_widgets_tui::ThrobberState,
+//! }
 //! impl App {
 //!     fn on_tick(&mut self) {
-//!         throbber_state.calc_next();
+//!         self.throbber_state.calc_next();
 //!     }
 //! }
-//! :
-//! fn ui<B: Backend>(f: &mut Frame<B>, cursor_y: &mut u16, app: &mut App) {
-//!     :
+//! // :
+//! // :
+//! fn ui<B: tui::backend::Backend>(f: &mut tui::Frame<B>, app: &mut App) {
+//!     let chunks = tui::layout::Layout::default()
+//!         .direction(tui::layout::Direction::Horizontal)
+//!         .margin(1)
+//!         .constraints(
+//!             [
+//!                 tui::layout::Constraint::Percentage(50),
+//!                 tui::layout::Constraint::Percentage(50),
+//!             ]
+//!             .as_ref(),
+//!         )
+//!         .split(f.size());
+//!
 //!     // Simple random step
 //!     let simple = throbber_widgets_tui::Throbber::default();
 //!     f.render_widget(simple, chunks[0]);
@@ -51,8 +67,8 @@
 //!     // Set full with state
 //!     let full = throbber_widgets_tui::Throbber::default()
 //!         .label("Running...")
-//!         .style(Style::default().fg(Color::Cyan))
-//!         .throbber_style(Style::default().fg(Color::Red).add_modifier(Modifier::BOLD))
+//!         .style(tui::style::Style::default().fg(tui::style::Color::Cyan))
+//!         .throbber_style(tui::style::Style::default().fg(tui::style::Color::Red).add_modifier(tui::style::Modifier::BOLD))
 //!         .throbber_set(throbber_widgets_tui::CLOCK)
 //!         .use_type(throbber_widgets_tui::WhichUse::Spin);
 //!     f.render_stateful_widget(full, chunks[1], &mut app.throbber_state);

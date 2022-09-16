@@ -16,7 +16,7 @@ impl ThrobberState {
     }
 
     /// Increase index.
-    /// 
+    ///
     /// # Examples:
     /// ```
     /// let mut throbber_state = throbber_widgets_tui::ThrobberState::default();
@@ -33,7 +33,7 @@ impl ThrobberState {
     /// Negative numbers can also be specified for step.
     ///
     /// If step is 0, the index is determined at random.
-    /// 
+    ///
     /// # Examples:
     /// ```
     /// let mut throbber_state = throbber_widgets_tui::ThrobberState::default();
@@ -41,7 +41,7 @@ impl ThrobberState {
     /// throbber_state.calc_step(2);
     /// assert_eq!(throbber_state.index(), 2);
     /// throbber_state.calc_step(-3);
-    /// assert_eq!(throbber_state.index(), -1); 
+    /// assert_eq!(throbber_state.index(), -1);
     /// throbber_state.calc_step(0); // random
     /// assert!((std::i8::MIN..=std::i8::MAX).contains(&throbber_state.index()))
     /// ```
@@ -55,9 +55,9 @@ impl ThrobberState {
     }
 
     /// Set the index to the range of throbber_set.symbols.len().
-    /// 
+    ///
     /// This is called from render function automatically.
-    /// 
+    ///
     /// # Examples:
     /// ```
     /// let mut throbber_state = throbber_widgets_tui::ThrobberState::default();
@@ -66,12 +66,12 @@ impl ThrobberState {
     ///
     /// throbber_state.normalize(&throbber);
     /// assert_eq!(throbber_state.index(), 0);
-    /// 
+    ///
     /// throbber_state.calc_step(len + 2);
     /// assert_eq!(throbber_state.index(), len + 2);
     /// throbber_state.normalize(&throbber);
     /// assert_eq!(throbber_state.index(), 2);
-    /// 
+    ///
     /// // Negative numbers are indexed from backward
     /// throbber_state.calc_step(-3 - len);
     /// assert_eq!(throbber_state.index(), -1 - len);
@@ -80,6 +80,7 @@ impl ThrobberState {
     /// ```
     pub fn normalize(&mut self, throbber: &Throbber) {
         let len = throbber.throbber_set.symbols.len() as i8;
+        #[allow(clippy::if_same_then_else)]
         if 0 <= self.index && self.index < len {
             //ok
         } else if len <= 0 {
@@ -88,7 +89,7 @@ impl ThrobberState {
             // Negative numbers are indexed from the tail
             self.index = len + (self.index % len);
         } else {
-            self.index = self.index % len;
+            self.index %= len;
         }
     }
 }
@@ -174,7 +175,7 @@ impl<'a> tui::widgets::Widget for Throbber<'a> {
 
 impl<'a> tui::widgets::StatefulWidget for Throbber<'a> {
     type State = ThrobberState;
-    
+
     /// Render specified index symbols.
     fn render(
         self,

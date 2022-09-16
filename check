@@ -1,0 +1,9 @@
+#!/bin/sh
+set -ex
+
+cargo audit
+cargo fmt
+cargo clippy
+cargo test
+cargo doc
+cargo run --example demo

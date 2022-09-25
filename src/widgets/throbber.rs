@@ -50,7 +50,7 @@ impl ThrobberState {
             let mut rng = rand::thread_rng();
             rng.gen()
         } else {
-            self.index + step
+            self.index.saturating_add(step)
         }
     }
 

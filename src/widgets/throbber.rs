@@ -87,7 +87,7 @@ impl ThrobberState {
             //ng but it's not used, so it stays.
         } else if self.index < 0 {
             // Negative numbers are indexed from the tail
-            self.index = len + (self.index % len);
+            self.index = len + (self.index % len) - 1;
         } else {
             self.index %= len;
         }

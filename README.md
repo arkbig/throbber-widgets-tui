@@ -33,7 +33,7 @@ cargo run --example demo --release
 ## Getting Started
 
 ```sh
-cargo add --git https://github.com/arkbig/throbber-widgets-tui
+cargo add throbber-widgets-tui
 ```
 
 ```rust

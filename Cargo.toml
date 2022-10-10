@@ -1,10 +1,11 @@
 [package]
 name = "throbber-widgets-tui"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 authors = ["arkbig"]
 description = "This is a tui-rs widget that displays throbber."
 readme = "README.md"
+documentation = "https://docs.rs/throbber-widgets-tui/latest/throbber_widgets_tui/"
 repository = "https://github.com/arkbig/throbber-widgets-tui"
 license = "Zlib"
 keywords = ["tui", "widgets"]

@@ -80,16 +80,14 @@ impl ThrobberState {
     /// ```
     pub fn normalize(&mut self, throbber: &Throbber) {
         let len = throbber.throbber_set.symbols.len() as i8;
-        #[allow(clippy::if_same_then_else)]
-        if 0 <= self.index && self.index < len {
-            //ok
-        } else if len <= 0 {
+        if len <= 0 {
             //ng but it's not used, so it stays.
-        } else if self.index < 0 {
-            // Negative numbers are indexed from the tail
-            self.index = len + (self.index % len) - 1;
         } else {
             self.index %= len;
+            if self.index < 0 {
+                // Negative numbers are indexed from the tail
+                self.index = len + self.index;
+            }
         }
     }
 }

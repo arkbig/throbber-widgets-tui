@@ -111,6 +111,13 @@ pub mod throbber {
         symbols: &["⠈", "⠐", "⠠", "⠄", "⠂", "⠁"],
     };
 
+    /// ["⠘", "⠰", "⠤", "⠆", "⠃", "⠉"]
+    pub const BRAILLE_DOUBLE: Set = Set {
+        full: "⠿",
+        empty: "　",
+        symbols: &["⠘", "⠰", "⠤", "⠆", "⠃", "⠉"],
+    };
+
     /// ["⠷", "⠯", "⠟", "⠻", "⠽", "⠾"]
     pub const BRAILLE_SIX: Set = Set {
         full: "⠿",
@@ -118,11 +125,25 @@ pub mod throbber {
         symbols: &["⠷", "⠯", "⠟", "⠻", "⠽", "⠾"],
     };
 
+    /// ["⠧", "⠏", "⠛", "⠹", "⠼", "⠶"]
+    pub const BRAILLE_SIX_DOUBLE: Set = Set {
+        full: "⠿",
+        empty: "　",
+        symbols: &["⠧", "⠏", "⠛", "⠹", "⠼", "⠶"],
+    };
+
     /// ["⣷", "⣯", "⣟", "⡿", "⢿", "⣻", "⣽", "⣾"]
     pub const BRAILLE_EIGHT: Set = Set {
         full: "⣿",
         empty: "　",
         symbols: &["⣷", "⣯", "⣟", "⡿", "⢿", "⣻", "⣽", "⣾"],
+    };
+
+    /// ["⣧", "⣏", "⡟", "⠿", "⢻", "⣹", "⣼", "⣶"]
+    pub const BRAILLE_EIGHT_DOUBLE: Set = Set {
+        full: "⣿",
+        empty: "　",
+        symbols: &["⣧", "⣏", "⡟", "⠿", "⢻", "⣹", "⣼", "⣶"],
     };
 
     /// [" ", "ᚐ", "ᚑ", "ᚒ", "ᚓ", "ᚔ"]

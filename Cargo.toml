@@ -1,6 +1,6 @@
 [package]
 name = "throbber-widgets-tui"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 authors = ["arkbig"]
 description = "This is a tui-rs widget that displays throbber."

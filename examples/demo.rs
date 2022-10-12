@@ -15,6 +15,9 @@ struct App {
     braille_one_state: throbber_widgets_tui::ThrobberState,
     braille_six_state: throbber_widgets_tui::ThrobberState,
     braille_eight_state: throbber_widgets_tui::ThrobberState,
+    braille_double_state: throbber_widgets_tui::ThrobberState,
+    braille_six_double_state: throbber_widgets_tui::ThrobberState,
+    braille_eight_double_state: throbber_widgets_tui::ThrobberState,
     ogham_a_state: throbber_widgets_tui::ThrobberState,
     ogham_b_state: throbber_widgets_tui::ThrobberState,
     ogham_c_state: throbber_widgets_tui::ThrobberState,
@@ -37,6 +40,9 @@ impl App {
         self.braille_one_state.calc_next();
         self.braille_six_state.calc_next();
         self.braille_eight_state.calc_next();
+        self.braille_double_state.calc_next();
+        self.braille_six_double_state.calc_next();
+        self.braille_eight_double_state.calc_next();
         self.ogham_a_state.calc_next();
         self.ogham_b_state.calc_next();
         self.ogham_c_state.calc_next();
@@ -105,10 +111,10 @@ fn run_app<B: tui::backend::Backend>(
 fn ui<B: tui::backend::Backend>(f: &mut tui::Frame<B>, app: &mut App) {
     let verticals = tui::layout::Layout::default()
         .direction(tui::layout::Direction::Vertical)
-        .margin(1)
         .constraints(
             [
                 tui::layout::Constraint::Percentage(10),
+                tui::layout::Constraint::Percentage(15),
                 tui::layout::Constraint::Percentage(15),
                 tui::layout::Constraint::Percentage(15),
                 tui::layout::Constraint::Percentage(15),
@@ -126,7 +132,6 @@ fn ui<B: tui::backend::Backend>(f: &mut tui::Frame<B>, app: &mut App) {
 
     let chunks1 = tui::layout::Layout::default()
         .direction(tui::layout::Direction::Horizontal)
-        .margin(1)
         .constraints(
             [
                 tui::layout::Constraint::Percentage(33),
@@ -138,7 +143,6 @@ fn ui<B: tui::backend::Backend>(f: &mut tui::Frame<B>, app: &mut App) {
         .split(verticals[1]);
     let chunks2 = tui::layout::Layout::default()
         .direction(tui::layout::Direction::Horizontal)
-        .margin(1)
         .constraints(
             [
                 tui::layout::Constraint::Percentage(33),
@@ -150,7 +154,6 @@ fn ui<B: tui::backend::Backend>(f: &mut tui::Frame<B>, app: &mut App) {
         .split(verticals[2]);
     let chunks3 = tui::layout::Layout::default()
         .direction(tui::layout::Direction::Horizontal)
-        .margin(1)
         .constraints(
             [
                 tui::layout::Constraint::Percentage(33),
@@ -162,7 +165,6 @@ fn ui<B: tui::backend::Backend>(f: &mut tui::Frame<B>, app: &mut App) {
         .split(verticals[3]);
     let chunks4 = tui::layout::Layout::default()
         .direction(tui::layout::Direction::Horizontal)
-        .margin(1)
         .constraints(
             [
                 tui::layout::Constraint::Percentage(33),
@@ -174,7 +176,6 @@ fn ui<B: tui::backend::Backend>(f: &mut tui::Frame<B>, app: &mut App) {
         .split(verticals[4]);
     let chunks5 = tui::layout::Layout::default()
         .direction(tui::layout::Direction::Horizontal)
-        .margin(1)
         .constraints(
             [
                 tui::layout::Constraint::Percentage(33),
@@ -186,7 +187,6 @@ fn ui<B: tui::backend::Backend>(f: &mut tui::Frame<B>, app: &mut App) {
         .split(verticals[5]);
     let chunks6 = tui::layout::Layout::default()
         .direction(tui::layout::Direction::Horizontal)
-        .margin(1)
         .constraints(
             [
                 tui::layout::Constraint::Percentage(33),
@@ -196,6 +196,17 @@ fn ui<B: tui::backend::Backend>(f: &mut tui::Frame<B>, app: &mut App) {
             .as_ref(),
         )
         .split(verticals[6]);
+    let chunks7 = tui::layout::Layout::default()
+        .direction(tui::layout::Direction::Horizontal)
+        .constraints(
+            [
+                tui::layout::Constraint::Percentage(33),
+                tui::layout::Constraint::Percentage(33),
+                tui::layout::Constraint::Percentage(33),
+            ]
+            .as_ref(),
+        )
+        .split(verticals[7]);
 
     let ascii_throbber = throbber_widgets_tui::Throbber::default()
         .label("ASCII Set")
@@ -308,18 +319,45 @@ fn ui<B: tui::backend::Backend>(f: &mut tui::Frame<B>, app: &mut App) {
         &mut app.braille_eight_state,
     );
 
+    let braille_double_throbber = throbber_widgets_tui::Throbber::default()
+        .label("BRAILLE_DOUBLE Set")
+        .throbber_set(throbber_widgets_tui::BRAILLE_DOUBLE);
+    f.render_stateful_widget(
+        braille_double_throbber,
+        chunks6[0],
+        &mut app.braille_double_state,
+    );
+
+    let braille_six_double_throbber = throbber_widgets_tui::Throbber::default()
+        .label("BRAILLE_SIX_DOUBLE Set")
+        .throbber_set(throbber_widgets_tui::BRAILLE_SIX_DOUBLE);
+    f.render_stateful_widget(
+        braille_six_double_throbber,
+        chunks6[1],
+        &mut app.braille_six_double_state,
+    );
+
+    let braille_eight_double_throbber = throbber_widgets_tui::Throbber::default()
+        .label("BRAILLE_EIGHT_DOUBLE Set")
+        .throbber_set(throbber_widgets_tui::BRAILLE_EIGHT_DOUBLE);
+    f.render_stateful_widget(
+        braille_eight_double_throbber,
+        chunks6[2],
+        &mut app.braille_eight_double_state,
+    );
+
     let ogham_a_throbber = throbber_widgets_tui::Throbber::default()
         .label("OGHAM_A Set")
         .throbber_set(throbber_widgets_tui::OGHAM_A);
-    f.render_stateful_widget(ogham_a_throbber, chunks6[0], &mut app.ogham_a_state);
+    f.render_stateful_widget(ogham_a_throbber, chunks7[0], &mut app.ogham_a_state);
 
     let ogham_b_throbber = throbber_widgets_tui::Throbber::default()
         .label("OGHAM_B Set")
         .throbber_set(throbber_widgets_tui::OGHAM_B);
-    f.render_stateful_widget(ogham_b_throbber, chunks6[1], &mut app.ogham_b_state);
+    f.render_stateful_widget(ogham_b_throbber, chunks7[1], &mut app.ogham_b_state);
 
     let ogham_c_throbber = throbber_widgets_tui::Throbber::default()
         .label("OGHAM_C Set")
         .throbber_set(throbber_widgets_tui::OGHAM_C);
-    f.render_stateful_widget(ogham_c_throbber, chunks6[2], &mut app.ogham_c_state);
+    f.render_stateful_widget(ogham_c_throbber, chunks7[2], &mut app.ogham_c_state);
 }

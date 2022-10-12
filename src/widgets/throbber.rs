@@ -86,7 +86,7 @@ impl ThrobberState {
             self.index %= len;
             if self.index < 0 {
                 // Negative numbers are indexed from the tail
-                self.index = len + self.index;
+                self.index += len;
             }
         }
     }

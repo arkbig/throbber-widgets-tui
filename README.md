@@ -77,6 +77,10 @@ fn ui<B: tui::backend::Backend>(f: &mut tui::Frame<B>, app: &mut App) {
 }
 ```
 
+## Apps using throbber-widgets-tui
+
+- [mntime](https://github.com/arkbig/mntime): Execute "m" commands "n" times to calculate mean of usage time and memory.  As an alternative to "time", "gnu-time" is used internally.
+
 ## Dependencies
 
 Direct dependencies crates:

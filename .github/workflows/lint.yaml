@@ -1,0 +1,37 @@
+name: Lint
+
+on:
+  push:
+    branches: [ $default-branch ]
+  pull_request:
+    branches: [ $default-branch ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Install Audit
+      uses: actions-rs/install@v0.1
+      with:
+        crate: cargo-audit
+        version: latest
+        use-tool-cache: true
+
+    - name: Audit
+      run: cargo audit
+
+    - name: Format
+      run: cargo fmt --check --verbose
+
+    - name: Lint
+      run: cargo clippy
+
+    - name: Documentation
+      run: cargo doc

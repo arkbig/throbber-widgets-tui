@@ -8,6 +8,11 @@ on:
 env:
   CARGO_TERM_COLOR: always
 
+permissions:
+  checks: write
+  contents: read
+  pull-requests: write
+
 jobs:
   lint:
 
@@ -17,7 +22,7 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Install Audit
-      run: cargo install audit
+      run: cargo install cargo-audit
 
     - name: Audit
       run: cargo audit

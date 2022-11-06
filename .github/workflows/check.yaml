@@ -17,11 +17,7 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Install Audit
-      uses: actions-rs/install@v0.1
-      with:
-        crate: cargo-audit
-        version: latest
-        use-tool-cache: true
+      run: cargo install audit
 
     - name: Audit
       run: cargo audit
@@ -56,11 +52,9 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Setup Rust
-      uses: actions-rs/toolchain@v1
+      uses: dtolnay/rust-toolchain@stable
       with:
         toolchain: ${{ matrix.rust }}
-        profile: minimal
-        override: true
 
     - name: Build
       run: cargo check --verbose --release

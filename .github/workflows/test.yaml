@@ -40,4 +40,4 @@ jobs:
 
     - name: Run tests
       run: cargo test --verbose
-      continue-on-error: ${{ matrix.rust == "nightly" }}
+      continue-on-error: ${{ matrix.rust == 'nightly' }}

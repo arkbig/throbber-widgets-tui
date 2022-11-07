@@ -1,6 +1,9 @@
 #!/bin/sh
 set -eux
 
+ROOTDIR=$(cd "$(dirname "$0")" && pwd)
+
+"$ROOTDIR/tools/check_readme.sh"
 cargo audit
 cargo fmt
 cargo clippy

@@ -5,7 +5,6 @@ on:
     branches: [ main ]
 
 env:
-  MSRV: 1.56.1
   CARGO_TERM_COLOR: always
 
 permissions:
@@ -29,6 +28,8 @@ jobs:
       run: cargo clippy
     - name: Documentation
       run: cargo doc
+    - name: Check README
+      run: tools/check_readme.sh
 
   build:
     needs: [ lint ]
@@ -37,7 +38,7 @@ jobs:
     strategy:
       matrix:
         rust:
-          - $MSRV
+          - 1.56.1 # MSRV
           - beta
           - nightly
         os:

@@ -32,6 +32,8 @@ cargo run --example demo --release
 
 ## Getting Started
 
+`throbber-widgets-tui` MSRV is `1.56.1`.
+
 ```sh
 cargo add throbber-widgets-tui
 ```
@@ -89,13 +91,13 @@ Direct dependencies crates:
 cargo license --direct-deps-only --avoid-build-deps --avoid-dev-deps | awk -F ":" 'BEGIN {printf "|License|crate|\n|-|-|\n"} {printf "|%s|%s|\n", $1, $2}'
 ```
 
-| License               | crate                |
-|-----------------------|----------------------|
-| Apache-2.0 OR MIT (1) | rand                 |
-| MIT (2)               | crossterm, tui       |
-| Zlib (1)              | throbber-widgets-tui |
+|License|crate|
+|-|-|
+|Apache-2.0 OR MIT (1)| rand|
+|MIT (2)| crossterm, tui|
+|Zlib (1)| throbber-widgets-tui|
 
-  Chain dependecies crates:
+Chain dependencies crates:
 
 ```sh
 cargo license --avoid-build-deps --avoid-dev-deps | awk -F ":" 'BEGIN {printf "|License|crate|\n|-|-|\n"} {printf "|%s|%s|\n", $1, $2}'
@@ -104,7 +106,7 @@ cargo license --avoid-build-deps --avoid-dev-deps | awk -F ":" 'BEGIN {printf "|
 |License|crate|
 |-|-|
 |Apache-2.0 OR Apache-2.0 WITH LLVM-exception OR MIT (1)| wasi|
-|Apache-2.0 OR MIT (29)| bitflags, cassowary, cfg-if, getrandom, libc, lock_api, log, parking_lot, parking_lot_core, ppv-lite86, rand, rand_chacha, rand_core, scopeguard, signal-hook, signal-hook-mio, signal-hook-registry, smallvec, unicode-segmentation, unicode-width, winapi, winapi-i686-pc-windows-gnu, winapi-x86_64-pc-windows-gnu, windows-sys, windows_aarch64_msvc, windows_i686_gnu, windows_i686_msvc, windows_x86_64_gnu, windows_x86_64_msvc|
+|Apache-2.0 OR MIT (31)| bitflags, cassowary, cfg-if, getrandom, libc, lock_api, log, parking_lot, parking_lot_core, ppv-lite86, rand, rand_chacha, rand_core, scopeguard, signal-hook, signal-hook-mio, signal-hook-registry, smallvec, unicode-segmentation, unicode-width, winapi, winapi-i686-pc-windows-gnu, winapi-x86_64-pc-windows-gnu, windows-sys, windows_aarch64_gnullvm, windows_aarch64_msvc, windows_i686_gnu, windows_i686_msvc, windows_x86_64_gnu, windows_x86_64_gnullvm, windows_x86_64_msvc|
 |MIT (5)| crossterm, crossterm_winapi, mio, redox_syscall, tui|
 |Zlib (1)| throbber-widgets-tui|
 

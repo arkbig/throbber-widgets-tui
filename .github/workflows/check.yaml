@@ -15,33 +15,25 @@ permissions:
 
 jobs:
   lint:
-
+    timeout-minutes: 10
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
-
     - name: Install Audit
       run: cargo install cargo-audit
-
     - name: Audit
       run: cargo audit
-
     - name: Format
       run: cargo fmt --check --verbose
-
     - name: Lint
       run: cargo clippy
-
     - name: Documentation
       run: cargo doc
 
   build:
     needs: [ lint ]
-
-    # name: Check for ${{ matrix.rust }} on ${{ matrix.os }}
+    timeout-minutes: 10
     runs-on: ${{ matrix.os }}
-
     strategy:
       matrix:
         rust:
@@ -52,18 +44,14 @@ jobs:
           - macos-latest
           - ubuntu-latest
           - windows-latest
-
     steps:
     - uses: actions/checkout@v3
-
     - name: Setup Rust
-      uses: dtolnay/rust-toolchain@stable
-      with:
-        toolchain: ${{ matrix.rust }}
-
+      run: |
+        rustup toolchain install --profile minimal ${{ matrix.rust }}
+        rustup override set ${{ matrix.rust }}
     - name: Build
       run: cargo check --verbose --release
-
     - name: Test
       run: cargo test --verbose
       continue-on-error: ${{ matrix.rust == 'nightly' }}

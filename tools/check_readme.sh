@@ -5,7 +5,7 @@ set -eu
 ROOTDIR=$(cd "$(dirname "$0")"/.. && pwd)
 
 echo Check MSRV:
-cargo_toml_msrv=$(grep "rust-version" "$ROOTDIR/Cargo.toml")
+cargo_toml_msrv=$(cd "$ROOTDIR" && cargo read-manifest | jq -r .rust_version)
 cargo_toml_msrv=${cargo_toml_msrv#rust-version = \"}
 cargo_toml_msrv=${cargo_toml_msrv%\"}
 readme_msrv=$(grep "MSRV" "$ROOTDIR/README.md")

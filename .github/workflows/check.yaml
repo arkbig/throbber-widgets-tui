@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: Install Audit
+    - name: Install cargo-audit
       run: cargo install cargo-audit
     - name: Audit
       run: cargo audit
@@ -28,6 +28,8 @@ jobs:
       run: cargo clippy
     - name: Documentation
       run: cargo doc
+    - name: Install cargo-license
+      run: cargo install cargo-license
     - name: Check README
       run: tools/check_readme.sh
 

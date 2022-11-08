@@ -1,0 +1,25 @@
+on:
+  workflow_run:
+    workflows: [ "check.yaml" ]
+    types: [ "completed" ]
+    branches: [ main ]
+    paths: [ Cargo.toml ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 2
+    - run: ./tools/publish_crate.sh
+      env:
+        CRATES_IO_TOKEN: ${{ secrets.CRATES_IO }}

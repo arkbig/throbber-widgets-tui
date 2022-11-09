@@ -1,8 +1,9 @@
 on:
   workflow_dispatch:
   workflow_run:
-    workflows: [ "check.yaml" ]
-    types: [ "completed" ]
+    workflows:
+      - .github/workflows/check.yaml
+    types: [ completed ]
     branches: [ main ]
     paths: [ Cargo.toml ]
 

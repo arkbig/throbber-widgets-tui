@@ -24,4 +24,5 @@ jobs:
         fetch-depth: 2
     - run: ./tools/publish_crate.sh
       env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         CRATES_IO_TOKEN: ${{ secrets.CRATES_IO }}

@@ -19,6 +19,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+    - uses: actions/cache@v3
+      with:
+        path: ~/.cargo/bin
+        key: ${{ runner.os}}-cargo-check
     - name: Install cargo-audit
       run: cargo install cargo-audit
     - name: Audit

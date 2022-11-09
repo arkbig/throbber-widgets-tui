@@ -12,7 +12,10 @@ if $already_exists_tag; then
     exit
 fi
 
+pushd "$ROOTDIR"
 git tag "v$crate_version"
 git push origin "v$crate_version"
 
-(cd "$ROOTDIR" && (echo \$CRATE_IO_TOKEN | envsubst | cargo login) && cargo publish)
+echo \$CRATE_IO_TOKEN | envsubst | cargo login
+cargo publish
+popd

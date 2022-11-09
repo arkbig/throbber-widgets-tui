@@ -5,7 +5,7 @@ on:
       - .github/workflows/check.yaml
     types: [ completed ]
     branches: [ main ]
-    paths: [ Cargo.toml ]
+    paths: [ Cargo.toml ] # No effect so far.
 
 env:
   CARGO_TERM_COLOR: always

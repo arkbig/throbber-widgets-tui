@@ -16,6 +16,6 @@ pushd "$ROOTDIR"
 git tag "v$crate_version"
 git push origin "v$crate_version"
 
-echo \$CRATE_IO_TOKEN | envsubst | cargo login
+echo \$CRATES_IO_TOKEN | envsubst | cargo login
 cargo publish
 popd

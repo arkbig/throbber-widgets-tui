@@ -31,7 +31,7 @@ cargo run --example demo --release
 
 ## Getting Started
 
-`throbber-widgets-tui` MSRV is `1.56.1`.
+MSRV: `throbber-widgets-tui` requires rustc 1.56.1 or newer.
 
 ```sh
 cargo add throbber-widgets-tui

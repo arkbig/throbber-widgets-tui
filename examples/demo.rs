@@ -1,3 +1,4 @@
+#[cfg(feature = "ratatui")]
 use ratatui as tui;
 
 #[derive(Default)]

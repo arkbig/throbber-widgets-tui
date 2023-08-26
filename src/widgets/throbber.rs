@@ -1,4 +1,6 @@
 use rand::Rng as _;
+
+#[cfg(feature = "ratatui")]
 use ratatui as tui;
 
 /// State to be used for Throbber render.
@@ -105,6 +107,7 @@ impl ThrobberState {
 /// # Examples:
 ///
 /// ```
+/// #[cfg(feature = "ratatui")]
 /// use ratatui as tui;
 /// //
 /// let throbber = throbber_widgets_tui::Throbber::default()

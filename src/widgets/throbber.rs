@@ -1,4 +1,5 @@
 use rand::Rng as _;
+use ratatui as tui;
 
 /// State to be used for Throbber render.
 #[derive(Debug, Clone, Default)]

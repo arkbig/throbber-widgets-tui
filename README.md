@@ -2,7 +2,7 @@
 
 [tui-rs]: https://github.com/fdehau/tui-rs
 
-> **_NOTE:_** I'm a newbie Rust. Therefore, there may be breaking changes in the future.
+> **_NOTE:_** I will switch from tui to ratatui as the base library and will be able to switch between tui and ratatui in the features flag.
 
 `throbber-widgets-tui` is a [tui-rs] widget that displays throbber.
 

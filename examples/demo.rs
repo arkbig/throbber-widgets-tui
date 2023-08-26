@@ -113,14 +113,14 @@ fn ui<B: tui::backend::Backend>(f: &mut tui::Frame<B>, app: &mut App) {
         .direction(tui::layout::Direction::Vertical)
         .constraints(
             [
-                tui::layout::Constraint::Percentage(10),
-                tui::layout::Constraint::Percentage(15),
-                tui::layout::Constraint::Percentage(15),
-                tui::layout::Constraint::Percentage(15),
-                tui::layout::Constraint::Percentage(15),
-                tui::layout::Constraint::Percentage(15),
-                tui::layout::Constraint::Percentage(15),
-                tui::layout::Constraint::Percentage(15),
+                tui::layout::Constraint::Length(1),
+                tui::layout::Constraint::Length(1),
+                tui::layout::Constraint::Length(1),
+                tui::layout::Constraint::Length(1),
+                tui::layout::Constraint::Length(1),
+                tui::layout::Constraint::Length(1),
+                tui::layout::Constraint::Length(1),
+                tui::layout::Constraint::Length(1),
             ]
             .as_ref(),
         )

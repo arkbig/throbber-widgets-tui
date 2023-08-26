@@ -38,6 +38,7 @@ cargo add throbber-widgets-tui
 ```
 
 ```rust
+use ratatui as tui;
 // :
 // :
 struct App {

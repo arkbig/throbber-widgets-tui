@@ -105,6 +105,8 @@ impl ThrobberState {
 /// # Examples:
 ///
 /// ```
+/// use ratatui as tui;
+/// //
 /// let throbber = throbber_widgets_tui::Throbber::default()
 ///     .throbber_style(tui::style::Style::default().fg(tui::style::Color::White).bg(tui::style::Color::Black))
 ///     .label("NOW LOADING...");

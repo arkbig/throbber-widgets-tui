@@ -1,5 +1,8 @@
 use rand::Rng as _;
 
+#[cfg(feature = "ratatui")]
+use ratatui as tui;
+
 /// State to be used for Throbber render.
 #[derive(Debug, Clone, Default)]
 pub struct ThrobberState {
@@ -104,6 +107,9 @@ impl ThrobberState {
 /// # Examples:
 ///
 /// ```
+/// #[cfg(feature = "ratatui")]
+/// use ratatui as tui;
+/// //
 /// let throbber = throbber_widgets_tui::Throbber::default()
 ///     .throbber_style(tui::style::Style::default().fg(tui::style::Color::White).bg(tui::style::Color::Black))
 ///     .label("NOW LOADING...");

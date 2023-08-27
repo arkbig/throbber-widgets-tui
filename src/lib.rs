@@ -1,9 +1,12 @@
 /*!
-# Throbber widget of [tui-rs]
+# Throbber widget of [ratatui]
 
+[ratatui]: https://github.com/ratatui-org/ratatui
 [tui-rs]: https://github.com/fdehau/tui-rs
 
-`throbber-widgets-tui` is a [tui-rs] widget that displays throbber.
+> **_NOTE:_** This crate was originally created as a widget for [tui-rs], so you can see `tui::` on the sample code, but (by default) [ratatui] is used, so please replace it accordingly.
+
+`throbber-widgets-tui` is a [ratatui] (or [tui-rs]) widget that displays throbber.
 
 A throbber may also be called:
 
@@ -31,13 +34,28 @@ cargo run --example demo --release
 
 ## Getting Started
 
-MSRV: `throbber-widgets-tui` requires rustc 1.56.1 or newer.
+MSRV: `throbber-widgets-tui` requires rustc 1.67.0 or newer.
 
 ```sh
 cargo add throbber-widgets-tui
 ```
 
+Default is [ratatui] as tui.
+
+<details>
+<summary>OR use [tui-rs] instead of [ratatui]. use `tui` features like clicked here.</summary>
+
+```sh
+cargo add throbber-widgets-tui --no-default-features --features tui
+```
+
+</details>
+
+Example code:
+
 ```rust
+#[cfg(feature = "ratatui")]
+use ratatui as tui;
 // :
 // :
 struct App {
@@ -82,14 +100,14 @@ fn ui<B: tui::backend::Backend>(f: &mut tui::Frame<B>, app: &mut App) {
 
 - [mntime](https://github.com/arkbig/mntime): Execute "m" commands "n" times to calculate mean of usage time and memory.  As an alternative to "time", "gnu-time" is used internally.
 
-## Dependencies
+## Dependencies (By default)
 
 Direct dependencies crates:
 
 |License|crate|
 |-|-|
 |Apache-2.0 OR MIT (1)| rand|
-|MIT (2)| crossterm, tui|
+|MIT (2)| crossterm, ratatui|
 |Zlib (1)| throbber-widgets-tui|
 
 Chain dependencies crates:
@@ -97,8 +115,8 @@ Chain dependencies crates:
 |License|crate|
 |-|-|
 |Apache-2.0 OR Apache-2.0 WITH LLVM-exception OR MIT (1)| wasi|
-|Apache-2.0 OR MIT (31)| bitflags, cassowary, cfg-if, getrandom, libc, lock_api, log, parking_lot, parking_lot_core, ppv-lite86, rand, rand_chacha, rand_core, scopeguard, signal-hook, signal-hook-mio, signal-hook-registry, smallvec, unicode-segmentation, unicode-width, winapi, winapi-i686-pc-windows-gnu, winapi-x86_64-pc-windows-gnu, windows-sys, windows_aarch64_gnullvm, windows_aarch64_msvc, windows_i686_gnu, windows_i686_msvc, windows_x86_64_gnu, windows_x86_64_gnullvm, windows_x86_64_msvc|
-|MIT (5)| crossterm, crossterm_winapi, mio, redox_syscall, tui|
+|Apache-2.0 OR MIT (35)| bitflags, bitflags, cassowary, cfg-if, getrandom, indoc, libc, lock_api, log, parking_lot, parking_lot_core, paste, ppv-lite86, rand, rand_chacha, rand_core, scopeguard, signal-hook, signal-hook-mio, signal-hook-registry, smallvec, unicode-segmentation, unicode-width, winapi, winapi-i686-pc-windows-gnu, winapi-x86_64-pc-windows-gnu, windows-sys, windows-targets, windows_aarch64_gnullvm, windows_aarch64_msvc, windows_i686_gnu, windows_i686_msvc, windows_x86_64_gnu, windows_x86_64_gnullvm, windows_x86_64_msvc|
+|MIT (5)| crossterm, crossterm_winapi, mio, ratatui, redox_syscall|
 |Zlib (1)| throbber-widgets-tui|
 
 ## License

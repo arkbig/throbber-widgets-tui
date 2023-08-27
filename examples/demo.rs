@@ -1,3 +1,6 @@
+#[cfg(feature = "ratatui")]
+use ratatui as tui;
+
 #[derive(Default)]
 struct App {
     ascii_state: throbber_widgets_tui::ThrobberState,

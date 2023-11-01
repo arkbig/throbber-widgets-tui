@@ -67,7 +67,15 @@ impl App {
 }
 // :
 // :
+#[cfg(feature = "ratatui")]
+fn ui(f: &mut tui::Frame, app: &mut App) {
+    ui_core(f, app)
+}
+#[cfg(feature = "tui")]
 fn ui<B: tui::backend::Backend>(f: &mut tui::Frame<B>, app: &mut App) {
+    ui_core(f, app)
+}
+fn ui_core(f: &mut tui::Frame, app: &mut App) {
     let chunks = tui::layout::Layout::default()
         .direction(tui::layout::Direction::Horizontal)
         .margin(1)
@@ -121,9 +129,11 @@ cargo license --avoid-build-deps --avoid-dev-deps | awk -F ":" 'BEGIN {printf "|
 
 |License|crate|
 |-|-|
+|(MIT OR Apache-2.0) AND Unicode-DFS-2016 (1)| unicode-ident|
 |Apache-2.0 OR Apache-2.0 WITH LLVM-exception OR MIT (1)| wasi|
-|Apache-2.0 OR MIT (35)| bitflags, bitflags, cassowary, cfg-if, getrandom, indoc, libc, lock_api, log, parking_lot, parking_lot_core, paste, ppv-lite86, rand, rand_chacha, rand_core, scopeguard, signal-hook, signal-hook-mio, signal-hook-registry, smallvec, unicode-segmentation, unicode-width, winapi, winapi-i686-pc-windows-gnu, winapi-x86_64-pc-windows-gnu, windows-sys, windows-targets, windows_aarch64_gnullvm, windows_aarch64_msvc, windows_i686_gnu, windows_i686_msvc, windows_x86_64_gnu, windows_x86_64_gnullvm, windows_x86_64_msvc|
-|MIT (5)| crossterm, crossterm_winapi, mio, ratatui, redox_syscall|
+|Apache-2.0 OR BSD-2-Clause OR MIT (2)| zerocopy, zerocopy-derive|
+|Apache-2.0 OR MIT (46)| ahash, allocator-api2, bitflags, bitflags, cassowary, cfg-if, either, getrandom, hashbrown, heck, indoc, itertools, libc, lock_api, log, once_cell, parking_lot, parking_lot_core, paste, ppv-lite86, proc-macro2, quote, rand, rand_chacha, rand_core, rustversion, scopeguard, signal-hook, signal-hook-mio, signal-hook-registry, smallvec, syn, unicode-segmentation, unicode-width, winapi, winapi-i686-pc-windows-gnu, winapi-x86_64-pc-windows-gnu, windows-sys, windows-targets, windows_aarch64_gnullvm, windows_aarch64_msvc, windows_i686_gnu, windows_i686_msvc, windows_x86_64_gnu, windows_x86_64_gnullvm, windows_x86_64_msvc|
+|MIT (8)| crossterm, crossterm_winapi, lru, mio, ratatui, redox_syscall, strum, strum_macros|
 |Zlib (1)| throbber-widgets-tui|
 
 ## License

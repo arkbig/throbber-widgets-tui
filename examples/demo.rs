@@ -110,8 +110,15 @@ fn run_app<B: tui::backend::Backend>(
         }
     }
 }
-
+#[cfg(feature = "ratatui")]
+fn ui(f: &mut tui::Frame, app: &mut App) {
+    ui_core(f, app)
+}
+#[cfg(feature = "tui")]
 fn ui<B: tui::backend::Backend>(f: &mut tui::Frame<B>, app: &mut App) {
+    ui_core(f, app)
+}
+fn ui_core(f: &mut tui::Frame, app: &mut App) {
     let verticals = tui::layout::Layout::default()
         .direction(tui::layout::Direction::Vertical)
         .constraints(

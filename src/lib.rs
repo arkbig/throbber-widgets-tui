@@ -68,15 +68,10 @@ impl App {
 }
 // :
 // :
+// If use tui-rs or ratatui v0.23.0 or older, use bellow.
+//fn ui<B: tui::backend::Backend>(f: &mut tui::Frame<B>, app: &mut App) {
 #[cfg(feature = "ratatui")]
 fn ui(f: &mut tui::Frame, app: &mut App) {
-    ui_core(f, app)
-}
-#[cfg(feature = "tui")]
-fn ui<B: tui::backend::Backend>(f: &mut tui::Frame<B>, app: &mut App) {
-    ui_core(f, app)
-}
-fn ui_core(f: &mut tui::Frame, app: &mut App) {
     let chunks = tui::layout::Layout::default()
         .direction(tui::layout::Direction::Horizontal)
         .margin(1)

@@ -166,6 +166,37 @@ impl<'a> Throbber<'a> {
         self.use_type = use_type;
         self
     }
+
+    /// Convert symbol only to Span with state.
+    pub fn to_symbol_span(&self, state: &ThrobberState) -> tui::text::Span<'a> {
+        let symbol = match self.use_type {
+            crate::symbols::throbber::WhichUse::Full => self.throbber_set.full,
+            crate::symbols::throbber::WhichUse::Empty => self.throbber_set.empty,
+            crate::symbols::throbber::WhichUse::Spin => {
+                let mut state = state.clone();
+                state.normalize(&self);
+                let len = self.throbber_set.symbols.len() as i8;
+                if 0 <= state.index && state.index < len {
+                    self.throbber_set.symbols[state.index as usize]
+                } else {
+                    self.throbber_set.empty
+                }
+            }
+        };
+        let symbol_span = tui::text::Span::styled(format!("{} ", symbol), self.style)
+            .patch_style(self.throbber_style);
+        symbol_span
+    }
+
+    /// Convert symbol and label to Line with state.
+    pub fn to_line(&self, state: &ThrobberState) -> tui::text::Line<'a> {
+        let mut line = tui::text::Line::default().style(self.style);
+        line.spans.push(self.to_symbol_span(state));
+        if let Some(label) = &self.label.clone() {
+            line.spans.push(label.clone());
+        }
+        line
+    }
 }
 
 impl<'a> tui::widgets::Widget for Throbber<'a> {
@@ -223,6 +254,28 @@ impl<'a> tui::widgets::StatefulWidget for Throbber<'a> {
             }
             buf.set_span(col, row, &label, label.width() as u16);
         }
+    }
+}
+
+/// Convert symbol only to Span without state(mostly random index).
+///
+/// If you want to specify a state, use `Throbber::to_symbol_span()`.
+impl<'a> Into<tui::text::Span<'a>> for Throbber<'a> {
+    fn into(self) -> tui::text::Span<'a> {
+        let mut state = ThrobberState::default();
+        state.calc_step(0);
+        self.to_symbol_span(&state)
+    }
+}
+
+/// Convert symbol and label to Line without state(mostly random index).
+///
+/// If you want to specify a state, use `Throbber::to_line()`.
+impl<'a> Into<tui::text::Line<'a>> for Throbber<'a> {
+    fn into(self) -> tui::text::Line<'a> {
+        let mut state = ThrobberState::default();
+        state.calc_step(0);
+        self.to_line(&state)
     }
 }
 

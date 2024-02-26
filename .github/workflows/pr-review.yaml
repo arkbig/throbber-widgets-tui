@@ -1,0 +1,19 @@
+name: PR Review
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - ready_for_review # Draft Pull RequestからDraftが外れたら起動
+jobs:
+  approve:
+    if: |
+      github.event.pull_request.user.login == github.repository_owner
+      && ! github.event.pull_request.draft
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      # Pull RequestをApproveする
+      - uses: hmarr/auto-approve-action@v3

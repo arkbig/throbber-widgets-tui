@@ -16,4 +16,4 @@ jobs:
       pull-requests: write
     steps:
       # Pull RequestをApproveする
-      - uses: hmarr/auto-approve-action@v3
+      - uses: hmarr/auto-approve-action@v4

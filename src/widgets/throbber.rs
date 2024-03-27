@@ -1,8 +1,5 @@
 use rand::Rng as _;
 
-#[cfg(feature = "ratatui")]
-use ratatui as tui;
-
 /// State to be used for Throbber render.
 #[derive(Debug, Clone, Default)]
 pub struct ThrobberState {
@@ -107,11 +104,8 @@ impl ThrobberState {
 /// # Examples:
 ///
 /// ```
-/// #[cfg(feature = "ratatui")]
-/// use ratatui as tui;
-/// //
 /// let throbber = throbber_widgets_tui::Throbber::default()
-///     .throbber_style(tui::style::Style::default().fg(tui::style::Color::White).bg(tui::style::Color::Black))
+///     .throbber_style(ratatui::style::Style::default().fg(ratatui::style::Color::White).bg(ratatui::style::Color::Black))
 ///     .label("NOW LOADING...");
 /// // frame.render_widget(throbber, chunks[0]);
 /// let throbber_state = throbber_widgets_tui::ThrobberState::default();
@@ -119,9 +113,9 @@ impl ThrobberState {
 /// ```
 #[derive(Debug, Clone)]
 pub struct Throbber<'a> {
-    label: Option<tui::text::Span<'a>>,
-    style: tui::style::Style,
-    throbber_style: tui::style::Style,
+    label: Option<ratatui::text::Span<'a>>,
+    style: ratatui::style::Style,
+    throbber_style: ratatui::style::Style,
     throbber_set: crate::symbols::throbber::Set,
     use_type: crate::symbols::throbber::WhichUse,
 }
@@ -130,8 +124,8 @@ impl<'a> Default for Throbber<'a> {
     fn default() -> Self {
         Self {
             label: None,
-            style: tui::style::Style::default(),
-            throbber_style: tui::style::Style::default(),
+            style: ratatui::style::Style::default(),
+            throbber_style: ratatui::style::Style::default(),
             throbber_set: crate::symbols::throbber::BRAILLE_SIX,
             use_type: crate::symbols::throbber::WhichUse::Spin,
         }
@@ -141,18 +135,18 @@ impl<'a> Default for Throbber<'a> {
 impl<'a> Throbber<'a> {
     pub fn label<T>(mut self, label: T) -> Self
     where
-        T: Into<tui::text::Span<'a>>,
+        T: Into<ratatui::text::Span<'a>>,
     {
         self.label = Some(label.into());
         self
     }
 
-    pub fn style(mut self, style: tui::style::Style) -> Self {
+    pub fn style(mut self, style: ratatui::style::Style) -> Self {
         self.style = style;
         self
     }
 
-    pub fn throbber_style(mut self, style: tui::style::Style) -> Self {
+    pub fn throbber_style(mut self, style: ratatui::style::Style) -> Self {
         self.throbber_style = style;
         self
     }
@@ -168,7 +162,7 @@ impl<'a> Throbber<'a> {
     }
 
     /// Convert symbol only to Span with state.
-    pub fn to_symbol_span(&self, state: &ThrobberState) -> tui::text::Span<'a> {
+    pub fn to_symbol_span(&self, state: &ThrobberState) -> ratatui::text::Span<'a> {
         let symbol = match self.use_type {
             crate::symbols::throbber::WhichUse::Full => self.throbber_set.full,
             crate::symbols::throbber::WhichUse::Empty => self.throbber_set.empty,
@@ -183,14 +177,14 @@ impl<'a> Throbber<'a> {
                 }
             }
         };
-        let symbol_span = tui::text::Span::styled(format!("{} ", symbol), self.style)
+        let symbol_span = ratatui::text::Span::styled(format!("{} ", symbol), self.style)
             .patch_style(self.throbber_style);
         symbol_span
     }
 
     /// Convert symbol and label to Line with state.
-    pub fn to_line(&self, state: &ThrobberState) -> tui::text::Line<'a> {
-        let mut line = tui::text::Line::default().style(self.style);
+    pub fn to_line(&self, state: &ThrobberState) -> ratatui::text::Line<'a> {
+        let mut line = ratatui::text::Line::default().style(self.style);
         line.spans.push(self.to_symbol_span(state));
         if let Some(label) = &self.label.clone() {
             line.spans.push(label.clone());
@@ -199,23 +193,23 @@ impl<'a> Throbber<'a> {
     }
 }
 
-impl<'a> tui::widgets::Widget for Throbber<'a> {
+impl<'a> ratatui::widgets::Widget for Throbber<'a> {
     /// Render random step symbols.
-    fn render(self, area: tui::layout::Rect, buf: &mut tui::buffer::Buffer) {
+    fn render(self, area: ratatui::layout::Rect, buf: &mut ratatui::buffer::Buffer) {
         let mut state = ThrobberState::default();
         state.calc_step(0);
-        tui::widgets::StatefulWidget::render(self, area, buf, &mut state);
+        ratatui::widgets::StatefulWidget::render(self, area, buf, &mut state);
     }
 }
 
-impl<'a> tui::widgets::StatefulWidget for Throbber<'a> {
+impl<'a> ratatui::widgets::StatefulWidget for Throbber<'a> {
     type State = ThrobberState;
 
     /// Render specified index symbols.
     fn render(
         self,
-        area: tui::layout::Rect,
-        buf: &mut tui::buffer::Buffer,
+        area: ratatui::layout::Rect,
+        buf: &mut ratatui::buffer::Buffer,
         state: &mut Self::State,
     ) {
         buf.set_style(area, self.style);
@@ -239,7 +233,7 @@ impl<'a> tui::widgets::StatefulWidget for Throbber<'a> {
                 }
             }
         };
-        let symbol_span = tui::text::Span::styled(format!("{} ", symbol), self.throbber_style);
+        let symbol_span = ratatui::text::Span::styled(format!("{} ", symbol), self.throbber_style);
         let (col, row) = buf.set_span(
             throbber_area.left(),
             throbber_area.top(),
@@ -260,8 +254,8 @@ impl<'a> tui::widgets::StatefulWidget for Throbber<'a> {
 /// Convert symbol only to Span without state(mostly random index).
 ///
 /// If you want to specify a state, use `Throbber::to_symbol_span()`.
-impl<'a> Into<tui::text::Span<'a>> for Throbber<'a> {
-    fn into(self) -> tui::text::Span<'a> {
+impl<'a> Into<ratatui::text::Span<'a>> for Throbber<'a> {
+    fn into(self) -> ratatui::text::Span<'a> {
         let mut state = ThrobberState::default();
         state.calc_step(0);
         self.to_symbol_span(&state)
@@ -271,8 +265,8 @@ impl<'a> Into<tui::text::Span<'a>> for Throbber<'a> {
 /// Convert symbol and label to Line without state(mostly random index).
 ///
 /// If you want to specify a state, use `Throbber::to_line()`.
-impl<'a> Into<tui::text::Line<'a>> for Throbber<'a> {
-    fn into(self) -> tui::text::Line<'a> {
+impl<'a> Into<ratatui::text::Line<'a>> for Throbber<'a> {
+    fn into(self) -> ratatui::text::Line<'a> {
         let mut state = ThrobberState::default();
         state.calc_step(0);
         self.to_line(&state)

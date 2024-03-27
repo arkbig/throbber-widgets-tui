@@ -3,9 +3,9 @@
 [ratatui]: https://github.com/ratatui-org/ratatui
 [tui-rs]: https://github.com/fdehau/tui-rs
 
-> **_NOTE:_** This crate was originally created as a widget for [tui-rs], so you can see `tui::` on the sample code, but (by default) [ratatui] is used, so please replace it accordingly.
+> **_NOTE:_** If you want to use [tui-rs] instead of [ratatui], please use 0.4.1 or older version.
 
-`throbber-widgets-tui` is a [ratatui] (or [tui-rs]) widget that displays throbber.
+`throbber-widgets-tui` is a [ratatui] widget that displays throbber.
 
 A throbber may also be called:
 
@@ -39,22 +39,9 @@ MSRV: `throbber-widgets-tui` requires rustc 1.72.0 or newer.
 cargo add throbber-widgets-tui
 ```
 
-Default is [ratatui] as tui.
-
-<details>
-<summary>OR use [tui-rs] instead of [ratatui]. use `tui` features like clicked here.</summary>
-
-```sh
-cargo add throbber-widgets-tui --no-default-features --features tui
-```
-
-</details>
-
 Example code:
 
 ```rust
-#[cfg(feature = "ratatui")]
-use ratatui as tui;
 // :
 // :
 struct App {
@@ -67,17 +54,14 @@ impl App {
 }
 // :
 // :
-// If use tui-rs or ratatui v0.23.0 or older, use bellow.
-//fn ui<B: tui::backend::Backend>(f: &mut tui::Frame<B>, app: &mut App) {
-#[cfg(feature = "ratatui")]
-fn ui(f: &mut tui::Frame, app: &mut App) {
-    let chunks = tui::layout::Layout::default()
-        .direction(tui::layout::Direction::Horizontal)
+fn ui(f: &mut ratatui::Frame, app: &mut App) {
+    let chunks = ratatui::layout::Layout::default()
+        .direction(ratatui::layout::Direction::Horizontal)
         .margin(1)
         .constraints(
             [
-                tui::layout::Constraint::Percentage(50),
-                tui::layout::Constraint::Percentage(50),
+                ratatui::layout::Constraint::Percentage(50),
+                ratatui::layout::Constraint::Percentage(50),
             ]
             .as_ref(),
         )
@@ -90,8 +74,8 @@ fn ui(f: &mut tui::Frame, app: &mut App) {
     // Set full with state
     let full = throbber_widgets_tui::Throbber::default()
         .label("Running...")
-        .style(tui::style::Style::default().fg(tui::style::Color::Cyan))
-        .throbber_style(tui::style::Style::default().fg(tui::style::Color::Red).add_modifier(tui::style::Modifier::BOLD))
+        .style(ratatui::style::Style::default().fg(ratatui::style::Color::Cyan))
+        .throbber_style(ratatui::style::Style::default().fg(ratatui::style::Color::Red).add_modifier(ratatui::style::Modifier::BOLD))
         .throbber_set(throbber_widgets_tui::CLOCK)
         .use_type(throbber_widgets_tui::WhichUse::Spin);
     f.render_stateful_widget(full, chunks[1], &mut app.throbber_state);

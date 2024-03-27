@@ -4,7 +4,7 @@ version = "0.4.1"
 edition = "2021"
 rust-version = "1.72.0"
 authors = ["arkbig"]
-description = "This is a ratatui (or tui-rs) widget that displays throbber."
+description = "This is a ratatui widget that displays throbber."
 readme = "README.md"
 documentation = "https://docs.rs/throbber-widgets-tui/latest/throbber_widgets_tui/"
 repository = "https://github.com/arkbig/throbber-widgets-tui"
@@ -12,13 +12,9 @@ license = "Zlib"
 keywords = ["tui", "widgets"]
 categories = ["command-line-utilities"]
 
-[features]
-default = ["ratatui"]
-
 [dependencies]
 rand = "0.8.5"
-ratatui = { version = "0.26.1", optional = true }
-tui = { version = "0.19.0", optional = true }
+ratatui = "0.26.1"
 
 [dev-dependencies]
 crossterm = "0.27.0"

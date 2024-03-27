@@ -166,4 +166,18 @@ pub mod throbber {
         empty: "　",
         symbols: &[" ", "ᚆ", "ᚇ", "ᚈ", "ᚉ", "ᚊ"],
     };
+
+    /// ["⎛", "⎜", "⎝", "⎞", "⎟", "⎠"]
+    pub const PARENTHESIS: Set = Set {
+        full: "∫",
+        empty: "　",
+        symbols: &["⎛", "⎜", "⎝", "⎞", "⎟", "⎠"],
+    };
+
+    /// ["ᔐ", "ᯇ", "ᔑ", "ᯇ"]
+    pub const CANADIAN: Set = Set {
+        full: "ᦟ",
+        empty: "　",
+        symbols: &["ᔐ", "ᯇ", "ᔑ", "ᯇ"],
+    };
 }

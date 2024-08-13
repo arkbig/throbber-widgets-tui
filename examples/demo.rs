@@ -11,12 +11,12 @@ impl App {
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     // setup terminal
-    crossterm::terminal::enable_raw_mode()?;
+    ratatui::crossterm::terminal::enable_raw_mode()?;
     let mut stdout = std::io::stdout();
-    crossterm::execute!(
+    ratatui::crossterm::execute!(
         stdout,
-        crossterm::terminal::EnterAlternateScreen,
-        crossterm::event::EnableMouseCapture
+        ratatui::crossterm::terminal::EnterAlternateScreen,
+        ratatui::crossterm::event::EnableMouseCapture
     )?;
     let backend = ratatui::backend::CrosstermBackend::new(stdout);
     let mut terminal = ratatui::Terminal::new(backend)?;
@@ -27,11 +27,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let res = run_app(&mut terminal, app, tick_rate);
 
     // restore terminal
-    crossterm::terminal::disable_raw_mode()?;
-    crossterm::execute!(
+    ratatui::crossterm::terminal::disable_raw_mode()?;
+    ratatui::crossterm::execute!(
         terminal.backend_mut(),
-        crossterm::terminal::LeaveAlternateScreen,
-        crossterm::event::DisableMouseCapture
+        ratatui::crossterm::terminal::LeaveAlternateScreen,
+        ratatui::crossterm::event::DisableMouseCapture
     )?;
     terminal.show_cursor()?;
 
@@ -54,9 +54,9 @@ fn run_app<B: ratatui::backend::Backend>(
         let timeout = tick_rate
             .checked_sub(last_tick.elapsed())
             .unwrap_or_else(|| std::time::Duration::from_secs(0));
-        if crossterm::event::poll(timeout)? {
-            if let crossterm::event::Event::Key(key) = crossterm::event::read()? {
-                if let crossterm::event::KeyCode::Char('q') = key.code {
+        if ratatui::crossterm::event::poll(timeout)? {
+            if let ratatui::crossterm::event::Event::Key(key) = ratatui::crossterm::event::read()? {
+                if let ratatui::crossterm::event::KeyCode::Char('q') = key.code {
                     return Ok(());
                 }
             }
@@ -108,7 +108,7 @@ fn ui(f: &mut ratatui::Frame, app: &mut App) {
     let verticals = ratatui::layout::Layout::default()
         .direction(ratatui::layout::Direction::Vertical)
         .constraints(&vec![ratatui::layout::Constraint::Length(1); vertical_num])
-        .split(f.size());
+        .split(f.area());
     let default_throbber = throbber_widgets_tui::Throbber::default()
         .label("Press q to exit. This line is a default throbber (random step). The followings are incremental step.")
         .style(ratatui::style::Style::default().fg(ratatui::style::Color::Yellow));

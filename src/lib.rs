@@ -66,7 +66,7 @@ fn ui(f: &mut ratatui::Frame, app: &mut App) {
             ]
             .as_ref(),
         )
-        .split(f.size());
+        .split(f.area());
 
     // Simple random step
     let simple = throbber_widgets_tui::Throbber::default();

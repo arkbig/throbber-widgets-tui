@@ -168,7 +168,7 @@ impl<'a> Throbber<'a> {
             crate::symbols::throbber::WhichUse::Empty => self.throbber_set.empty,
             crate::symbols::throbber::WhichUse::Spin => {
                 let mut state = state.clone();
-                state.normalize(&self);
+                state.normalize(self);
                 let len = self.throbber_set.symbols.len() as i8;
                 if 0 <= state.index && state.index < len {
                     self.throbber_set.symbols[state.index as usize]
@@ -254,22 +254,22 @@ impl<'a> ratatui::widgets::StatefulWidget for Throbber<'a> {
 /// Convert symbol only to Span without state(mostly random index).
 ///
 /// If you want to specify a state, use `Throbber::to_symbol_span()`.
-impl<'a> Into<ratatui::text::Span<'a>> for Throbber<'a> {
-    fn into(self) -> ratatui::text::Span<'a> {
+impl<'a> From<Throbber<'a>> for ratatui::text::Span<'a> {
+    fn from(throbber: Throbber<'a>) -> ratatui::text::Span<'a> {
         let mut state = ThrobberState::default();
         state.calc_step(0);
-        self.to_symbol_span(&state)
+        throbber.to_symbol_span(&state)
     }
 }
 
 /// Convert symbol and label to Line without state(mostly random index).
 ///
 /// If you want to specify a state, use `Throbber::to_line()`.
-impl<'a> Into<ratatui::text::Line<'a>> for Throbber<'a> {
-    fn into(self) -> ratatui::text::Line<'a> {
+impl<'a> From<Throbber<'a>> for ratatui::text::Line<'a> {
+    fn from(throbber: Throbber<'a>) -> ratatui::text::Line<'a> {
         let mut state = ThrobberState::default();
         state.calc_step(0);
-        self.to_line(&state)
+        throbber.to_line(&state)
     }
 }
 
@@ -321,5 +321,19 @@ mod tests {
         throbber_state.calc_step(len * -2);
         throbber_state.normalize(&throbber);
         assert_eq!(throbber_state.index(), max);
+    }
+
+    #[test]
+    fn throbber_converts_to_span() {
+        let throbber = Throbber::default().use_type(crate::symbols::throbber::WhichUse::Full);
+        let span: ratatui::text::Span = throbber.into();
+        assert_eq!(span.content, "⠿ ");
+    }
+
+    #[test]
+    fn throbber_converts_to_line() {
+        let throbber = Throbber::default().use_type(crate::symbols::throbber::WhichUse::Full);
+        let line: ratatui::text::Line = throbber.into();
+        assert_eq!(line.spans[0].content, "⠿ ");
     }
 }

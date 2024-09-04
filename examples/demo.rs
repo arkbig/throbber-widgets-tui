@@ -9,17 +9,9 @@ impl App {
     }
 }
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+fn main() -> std::io::Result<()> {
     // setup terminal
-    ratatui::crossterm::terminal::enable_raw_mode()?;
-    let mut stdout = std::io::stdout();
-    ratatui::crossterm::execute!(
-        stdout,
-        ratatui::crossterm::terminal::EnterAlternateScreen,
-        ratatui::crossterm::event::EnableMouseCapture
-    )?;
-    let backend = ratatui::backend::CrosstermBackend::new(stdout);
-    let mut terminal = ratatui::Terminal::new(backend)?;
+    let mut terminal = ratatui::init();
 
     // create app and run it
     let tick_rate = std::time::Duration::from_millis(250);
@@ -27,19 +19,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let res = run_app(&mut terminal, app, tick_rate);
 
     // restore terminal
-    ratatui::crossterm::terminal::disable_raw_mode()?;
-    ratatui::crossterm::execute!(
-        terminal.backend_mut(),
-        ratatui::crossterm::terminal::LeaveAlternateScreen,
-        ratatui::crossterm::event::DisableMouseCapture
-    )?;
-    terminal.show_cursor()?;
+    ratatui::restore();
 
-    if let Err(err) = res {
-        println!("{:?}", err)
-    }
-
-    Ok(())
+    res
 }
 
 fn run_app<B: ratatui::backend::Backend>(

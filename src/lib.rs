@@ -105,10 +105,10 @@ Chain dependencies crates:
 |Apache-2.0 OR Apache-2.0 WITH LLVM-exception OR MIT (3)| linux-raw-sys, rustix, wasi|
 |Apache-2.0 OR BSD-2-Clause OR MIT (2)| zerocopy, zerocopy-derive|
 |Apache-2.0 OR BSL-1.0 (1)| ryu|
-|Apache-2.0 OR MIT (50)| ahash, allocator-api2, bitflags, cassowary, cfg-if, either, errno, getrandom, hashbrown, heck, hermit-abi, itertools, itoa, libc, lock_api, log, once_cell, parking_lot, parking_lot_core, paste, ppv-lite86, proc-macro2, quote, rand, rand_chacha, rand_core, rustversion, scopeguard, signal-hook, signal-hook-mio, signal-hook-registry, smallvec, static_assertions, syn, unicode-segmentation, unicode-truncate, unicode-width, winapi, winapi-i686-pc-windows-gnu, winapi-x86_64-pc-windows-gnu, windows-sys, windows-targets, windows_aarch64_gnullvm, windows_aarch64_msvc, windows_i686_gnu, windows_i686_gnullvm, windows_i686_msvc, windows_x86_64_gnu, windows_x86_64_gnullvm, windows_x86_64_msvc|
+|Apache-2.0 OR MIT (49)| allocator-api2, bitflags, cassowary, cfg-if, either, equivalent, errno, getrandom, hashbrown, heck, hermit-abi, itertools, itoa, libc, lock_api, log, parking_lot, parking_lot_core, paste, ppv-lite86, proc-macro2, quote, rand, rand_chacha, rand_core, rustversion, scopeguard, signal-hook, signal-hook-mio, signal-hook-registry, smallvec, static_assertions, syn, unicode-segmentation, unicode-truncate, unicode-width, winapi, winapi-i686-pc-windows-gnu, winapi-x86_64-pc-windows-gnu, windows-sys, windows-targets, windows_aarch64_gnullvm, windows_aarch64_msvc, windows_i686_gnu, windows_i686_gnullvm, windows_i686_msvc, windows_x86_64_gnu, windows_x86_64_gnullvm, windows_x86_64_msvc|
 |MIT (11)| castaway, compact_str, crossterm, crossterm_winapi, instability, lru, mio, ratatui, redox_syscall, strum, strum_macros|
 |MIT OR Unlicense (1)| byteorder|
-|Zlib (1)| throbber-widgets-tui|
+|Zlib (2)| foldhash, throbber-widgets-tui|
 
 ## License
 

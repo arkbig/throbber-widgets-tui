@@ -50,7 +50,7 @@ impl ThrobberState {
             let mut rng = rand::thread_rng();
             rng.gen()
         } else {
-            self.index.saturating_add(step)
+            self.index.checked_add(step).unwrap_or(0)
         }
     }
 
@@ -335,5 +335,16 @@ mod tests {
         let throbber = Throbber::default().use_type(crate::symbols::throbber::WhichUse::Full);
         let line: ratatui::text::Line = throbber.into();
         assert_eq!(line.spans[0].content, "⠿ ");
+    }
+
+    #[test]
+    fn throbber_reaches_upper_limit_step_resets_to_zero() {
+        let mut throbber_state = ThrobberState::default();
+
+        for _ in 0..i8::MAX {
+            throbber_state.calc_next();
+        }
+        throbber_state.calc_next();
+        assert!(throbber_state.index() != i8::MAX);
     }
 }

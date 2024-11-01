@@ -1,6 +1,6 @@
 [package]
 name = "throbber-widgets-tui"
-version = "0.7.1"
+version = "0.7.2"
 edition = "2021"
 rust-version = "1.74.0"
 authors = ["arkbig"]
@@ -14,7 +14,7 @@ categories = ["command-line-utilities"]
 
 [dependencies]
 rand = "0.8.5"
-ratatui = { version="0.29.0", default-features = false }
+ratatui = { version = "0.29.0", default-features = false }
 
 [dev-dependencies]
 ratatui = "0.29.0"

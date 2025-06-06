@@ -1,6 +1,6 @@
 pub mod throbber {
     /// A set of symbols to be rendered by throbber.
-    #[derive(Debug, Clone)]
+    #[derive(Debug, Clone, PartialEq, Eq)]
     pub struct Set {
         pub full: &'static str,
         pub empty: &'static str,
@@ -10,7 +10,7 @@ pub mod throbber {
     /// Rendering object.
     ///
     /// If Spin is specified, ThrobberState.index is used.
-    #[derive(Debug, Clone)]
+    #[derive(Debug, Clone, PartialEq, Eq)]
     pub enum WhichUse {
         Full,
         Empty,

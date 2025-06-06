@@ -1,7 +1,7 @@
 use rand::Rng as _;
 
 /// State to be used for Throbber render.
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
 pub struct ThrobberState {
     /// Index of Set.symbols used when Spin is specified for WhichUse.
     ///
@@ -111,7 +111,7 @@ impl ThrobberState {
 /// let throbber_state = throbber_widgets_tui::ThrobberState::default();
 /// // frame.render_stateful_widget(throbber, chunks[0], &mut throbber_state);
 /// ```
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Throbber<'a> {
     label: Option<ratatui::text::Span<'a>>,
     style: ratatui::style::Style,

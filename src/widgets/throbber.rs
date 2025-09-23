@@ -33,7 +33,7 @@ impl ThrobberState {
     ///
     /// Negative numbers can also be specified for step.
     ///
-    /// If feature `rand` is enabled and step is 0, the index is determined at random.
+    /// If step is 0, the index is determined at random.
     ///
     /// # Examples:
     /// ```
@@ -47,19 +47,24 @@ impl ThrobberState {
     /// assert!((std::i8::MIN..=std::i8::MAX).contains(&throbber_state.index()))
     /// ```
     pub fn calc_step(&mut self, step: i8) {
-        #[cfg(feature = "rand")]
-        {
-            self.index = if step == 0 {
-                let mut rng = rand::thread_rng();
-                rng.gen()
-            } else {
-                self.index.checked_add(step).unwrap_or(0)
+        self.index = if step == 0 {
+            #[cfg(feature = "rand")]
+            {
+                let mut rng = rand::rng();
+                rng.random()
             }
-        }
-
-        #[cfg(not(feature = "rand"))]
-        {
-            self.index = self.index.checked_add(step).unwrap_or(0)
+            #[cfg(not(feature = "rand"))]
+            {
+                let duration = std::time::SystemTime::now()
+                    .duration_since(std::time::UNIX_EPOCH)
+                    .unwrap_or_default();
+                // If the resolution is low, it might become zero, so I add multiple values.
+                (duration.as_nanos() % 0x100
+                    + duration.as_micros() % 0x100
+                    + duration.as_millis() % 0x100) as i8
+            }
+        } else {
+            self.index.checked_add(step).unwrap_or(0)
         }
     }
 
@@ -129,7 +134,7 @@ pub struct Throbber<'a> {
     use_type: crate::symbols::throbber::WhichUse,
 }
 
-impl<'a> Default for Throbber<'a> {
+impl Default for Throbber<'_> {
     fn default() -> Self {
         Self {
             label: None,
@@ -202,7 +207,7 @@ impl<'a> Throbber<'a> {
     }
 }
 
-impl<'a> ratatui::widgets::Widget for Throbber<'a> {
+impl ratatui::widgets::Widget for Throbber<'_> {
     /// Render random step symbols.
     fn render(self, area: ratatui::layout::Rect, buf: &mut ratatui::buffer::Buffer) {
         let mut state = ThrobberState::default();
@@ -211,7 +216,7 @@ impl<'a> ratatui::widgets::Widget for Throbber<'a> {
     }
 }
 
-impl<'a> ratatui::widgets::StatefulWidget for Throbber<'a> {
+impl ratatui::widgets::StatefulWidget for Throbber<'_> {
     type State = ThrobberState;
 
     /// Render specified index symbols.

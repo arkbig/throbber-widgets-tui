@@ -1,3 +1,4 @@
+#[cfg(feature = "rand")]
 use rand::Rng as _;
 
 /// State to be used for Throbber render.
@@ -32,7 +33,7 @@ impl ThrobberState {
     ///
     /// Negative numbers can also be specified for step.
     ///
-    /// If step is 0, the index is determined at random.
+    /// If feature `rand` is enabled and step is 0, the index is determined at random.
     ///
     /// # Examples:
     /// ```
@@ -46,11 +47,19 @@ impl ThrobberState {
     /// assert!((std::i8::MIN..=std::i8::MAX).contains(&throbber_state.index()))
     /// ```
     pub fn calc_step(&mut self, step: i8) {
-        self.index = if step == 0 {
-            let mut rng = rand::thread_rng();
-            rng.gen()
-        } else {
-            self.index.checked_add(step).unwrap_or(0)
+        #[cfg(feature = "rand")]
+        {
+            self.index = if step == 0 {
+                let mut rng = rand::thread_rng();
+                rng.gen()
+            } else {
+                self.index.checked_add(step).unwrap_or(0)
+            }
+        }
+
+        #[cfg(not(feature = "rand"))]
+        {
+            self.index = self.index.checked_add(step).unwrap_or(0)
         }
     }
 

@@ -13,8 +13,11 @@ license = "Zlib"
 keywords = ["tui", "widgets"]
 categories = ["command-line-utilities"]
 
+[features]
+rand = ["dep:rand"]
+
 [dependencies]
-rand = "0.8.5"
+rand = { version = "0.8.5", optional = true }
 ratatui = { version = "0.29.0", default-features = false }
 
 [dev-dependencies]

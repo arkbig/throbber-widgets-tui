@@ -31,7 +31,9 @@ fn run_app<B: ratatui::backend::Backend>(
 ) -> std::io::Result<()> {
     let mut last_tick = std::time::Instant::now();
     loop {
-        terminal.draw(|f| ui(f, &mut app))?;
+        terminal
+            .draw(|f| ui(f, &mut app))
+            .map_err(|e| std::io::Error::new(std::io::ErrorKind::Other, e.to_string()))?;
 
         let timeout = tick_rate
             .checked_sub(last_tick.elapsed())

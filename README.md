@@ -33,7 +33,7 @@ cargo run --example demo --release
 
 ## Getting Started
 
-MSRV: `throbber-widgets-tui` requires rustc 1.74.0 or newer.
+MSRV: `throbber-widgets-tui` requires rustc 1.86.0 or newer.
 
 ```sh
 cargo add throbber-widgets-tui
@@ -96,6 +96,7 @@ cargo license --direct-deps-only --avoid-build-deps --avoid-dev-deps | awk -F ":
 
 |License|crate|
 |-|-|
+|Apache-2.0 OR MIT (1)| rand|
 |MIT (1)| ratatui|
 |Zlib (1)| throbber-widgets-tui|
 
@@ -108,10 +109,16 @@ cargo license --avoid-build-deps --avoid-dev-deps | awk -F ":" 'BEGIN {printf "|
 |License|crate|
 |-|-|
 |(Apache-2.0 OR MIT) AND Unicode-3.0 (1)| unicode-ident|
-|Apache-2.0 OR Apache-2.0 WITH LLVM-exception OR MIT (3)| linux-raw-sys, rustix, wasi|
+|(Apache-2.0 OR MIT) AND Unicode-DFS-2016 (1)| finl_unicode|
+|Apache-2.0 OR Apache-2.0 WITH LLVM-exception OR MIT (5)| linux-raw-sys, rustix, wasi, wasip2, wit-bindgen|
 |Apache-2.0 OR BSL-1.0 (1)| ryu|
-|Apache-2.0 OR MIT (49)| allocator-api2, bitflags, cassowary, cfg-if, either, equivalent, errno, fnv, hashbrown, heck, ident_case, indoc, itertools, itoa, libc, lock_api, log, parking_lot, parking_lot_core, paste, proc-macro2, quote, rustversion, scopeguard, signal-hook, signal-hook-mio, signal-hook-registry, smallvec, static_assertions, syn, unicode-segmentation, unicode-truncate, unicode-width, unicode-width, winapi, winapi-i686-pc-windows-gnu, winapi-x86_64-pc-windows-gnu, windows-link, windows-sys, windows-sys, windows-targets, windows_aarch64_gnullvm, windows_aarch64_msvc, windows_i686_gnu, windows_i686_gnullvm, windows_i686_msvc, windows_x86_64_gnu, windows_x86_64_gnullvm, windows_x86_64_msvc|
-|MIT (15)| castaway, compact_str, crossterm, crossterm_winapi, darling, darling_core, darling_macro, instability, lru, mio, ratatui, redox_syscall, strsim, strum, strum_macros|
+|Apache-2.0 OR LGPL-2.1-or-later OR MIT (1)| r-efi|
+|Apache-2.0 OR MIT (99)| allocator-api2, anyhow, atomic, base64, bit-set, bit-vec, bitflags, bitflags, block-buffer, bumpalo, cfg-if, cpufeatures, crypto-common, csscolorparser, deranged, digest, document-features, either, equivalent, errno, euclid, fixedbitset, fnv, getrandom, hashbrown, heck, hex, ident_case, indoc, itertools, itertools, itoa, js-sys, kasuari, lazy_static, libc, line-clipping, litrs, lock_api, log, mac_address, memmem, minimal-lexical, num-conv, num-derive, num-traits, num_threads, once_cell, parking_lot, parking_lot_core, pest, pest_derive, pest_generator, pest_meta, portable-atomic, powerfmt, proc-macro2, quote, rand, rand_core, regex, regex-automata, regex-syntax, rustversion, scopeguard, serde, serde_core, serde_derive, sha2, signal-hook, signal-hook-mio, signal-hook-registry, siphasher, smallvec, static_assertions, syn, syn, thiserror, thiserror, thiserror-impl, thiserror-impl, time, time-core, typenum, ucd-trie, unicode-segmentation, unicode-truncate, unicode-width, utf8parse, uuid, wasm-bindgen, wasm-bindgen-macro, wasm-bindgen-macro-support, wasm-bindgen-shared, winapi, winapi-i686-pc-windows-gnu, winapi-x86_64-pc-windows-gnu, windows-link, windows-sys|
+|Apache-2.0 OR MIT OR Zlib (1)| bytemuck|
+|MIT (44)| castaway, compact_str, convert_case, crossterm, crossterm_winapi, darling, darling_core, darling_macro, deltae, derive_more, derive_more-impl, fancy-regex, filedescriptor, generic-array, instability, lab, lru, memoffset, mio, nix, nom, ordered-float, phf, phf_generator, phf_macros, phf_shared, ratatui, ratatui-core, ratatui-crossterm, ratatui-macros, ratatui-termwiz, ratatui-widgets, redox_syscall, strsim, strum, strum_macros, termios, termwiz, vtparse, wezterm-blob-leases, wezterm-color-types, wezterm-dynamic, wezterm-dynamic-derive, wezterm-input-types|
+|MIT AND Unicode-DFS-2016 (1)| wezterm-bidi|
+|MIT OR Unlicense (2)| aho-corasick, memchr|
+|WTFPL (1)| terminfo|
 |Zlib (2)| foldhash, throbber-widgets-tui|
 
 ## License

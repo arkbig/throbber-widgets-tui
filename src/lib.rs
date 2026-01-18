@@ -119,6 +119,10 @@ Chain dependencies crates:
 This repository's license is zlib. Please feel free to use this, but no warranty.
 */
 
+#![cfg_attr(not(feature = "std"), no_std)]
+
+extern crate alloc;
+
 pub mod symbols;
 pub mod widgets;
 

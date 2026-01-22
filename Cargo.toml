@@ -3,7 +3,7 @@ name = "throbber-widgets-tui"
 #note: After updating the dependent crate, do +0.1.0
 version = "0.10.0"
 edition = "2021"
-rust-version = "1.86.0"
+rust-version = "1.88.0"
 authors = ["arkbig"]
 description = "This is a ratatui widget that displays throbber."
 readme = "README.md"

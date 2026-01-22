@@ -1,3 +1,5 @@
+use alloc::string::String;
+
 #[cfg(feature = "rand")]
 use rand::Rng as _;
 
@@ -53,7 +55,7 @@ impl ThrobberState {
                 let mut rng = rand::rng();
                 rng.random()
             }
-            #[cfg(not(feature = "rand"))]
+            #[cfg(all(not(feature = "rand"), feature = "std"))]
             {
                 let duration = std::time::SystemTime::now()
                     .duration_since(std::time::UNIX_EPOCH)
@@ -62,6 +64,12 @@ impl ThrobberState {
                 (duration.as_nanos() % 0x100
                     + duration.as_micros() % 0x100
                     + duration.as_millis() % 0x100) as i8
+            }
+            #[cfg(all(not(feature = "rand"), not(feature = "std")))]
+            {
+                // In no_std without rand, keep current index unchanged.
+                // Use calc_next() or calc_step(N) where N != 0 for animation.
+                self.index
             }
         } else {
             self.index.checked_add(step).unwrap_or(0)
@@ -191,8 +199,10 @@ impl<'a> Throbber<'a> {
                 }
             }
         };
-        let symbol_span = ratatui::text::Span::styled(format!("{} ", symbol), self.style)
-            .patch_style(self.throbber_style);
+        let mut symbol_text = String::from(symbol);
+        symbol_text.push(' ');
+        let symbol_span =
+            ratatui::text::Span::styled(symbol_text, self.style).patch_style(self.throbber_style);
         symbol_span
     }
 
@@ -247,7 +257,9 @@ impl ratatui::widgets::StatefulWidget for Throbber<'_> {
                 }
             }
         };
-        let symbol_span = ratatui::text::Span::styled(format!("{} ", symbol), self.throbber_style);
+        let mut symbol_text = String::from(symbol);
+        symbol_text.push(' ');
+        let symbol_span = ratatui::text::Span::styled(symbol_text, self.throbber_style);
         let (col, row) = buf.set_span(
             throbber_area.left(),
             throbber_area.top(),
@@ -291,6 +303,7 @@ impl<'a> From<Throbber<'a>> for ratatui::text::Line<'a> {
 mod tests {
     use super::*;
     #[test]
+    #[allow(unused_variables, unused_assignments)]
     fn throbber_state_calc_step() {
         let mut throbber_state = ThrobberState::default();
         assert_eq!(throbber_state.index(), 0);
@@ -300,12 +313,14 @@ mod tests {
         let mut difference = false;
         for _ in 0..100 {
             throbber_state.calc_step(0);
-            assert!((std::i8::MIN..=std::i8::MAX).contains(&throbber_state.index()));
+            assert!((i8::MIN..=i8::MAX).contains(&throbber_state.index()));
 
             if 0 != throbber_state.index() {
                 difference = true;
             }
         }
+        // In no_std without rand, calc_step(0) keeps index unchanged, so no difference expected
+        #[cfg(any(feature = "rand", feature = "std"))]
         assert!(difference);
     }
 

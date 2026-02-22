@@ -69,3 +69,7 @@ jobs:
       - name: Test
         run: cargo test --verbose
         continue-on-error: ${{ matrix.rust == 'nightly' }}
+      - name: No-std Build
+        run: cargo build --no-default-features --example no_std_demo
+      - name: No-std Run
+        run: cargo run --no-default-features --example no_std_demo

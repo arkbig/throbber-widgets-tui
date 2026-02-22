@@ -9,4 +9,5 @@ cargo fmt
 cargo clippy
 cargo test
 cargo doc
+cargo run --no-default-features --example no_std_demo
 cargo run --example demo

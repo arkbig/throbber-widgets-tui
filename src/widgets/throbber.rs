@@ -2,6 +2,7 @@ use alloc::string::String;
 
 #[cfg(feature = "rand")]
 use rand::Rng as _;
+use ratatui::widgets::BlockExt;
 
 /// State to be used for Throbber render.
 #[derive(Debug, Clone, Default, PartialEq, Eq)]
@@ -135,6 +136,7 @@ impl ThrobberState {
 /// ```
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Throbber<'a> {
+    block: Option<ratatui::widgets::Block<'a>>,
     label: Option<ratatui::text::Span<'a>>,
     style: ratatui::style::Style,
     throbber_style: ratatui::style::Style,
@@ -145,6 +147,7 @@ pub struct Throbber<'a> {
 impl Default for Throbber<'_> {
     fn default() -> Self {
         Self {
+            block: None,
             label: None,
             style: ratatui::style::Style::default(),
             throbber_style: ratatui::style::Style::default(),
@@ -155,6 +158,11 @@ impl Default for Throbber<'_> {
 }
 
 impl<'a> Throbber<'a> {
+    pub fn block(mut self, block: ratatui::widgets::Block<'a>) -> Self {
+        self.block = Some(block);
+        self
+    }
+
     pub fn label<T>(mut self, label: T) -> Self
     where
         T: Into<ratatui::text::Span<'a>>,
@@ -237,6 +245,9 @@ impl ratatui::widgets::StatefulWidget for Throbber<'_> {
         state: &mut Self::State,
     ) {
         buf.set_style(area, self.style);
+
+        ratatui::widgets::Widget::render(self.block.as_ref(), area, buf);
+        let area = self.block.inner_if_some(area);
 
         let throbber_area = area;
         if throbber_area.height < 1 {

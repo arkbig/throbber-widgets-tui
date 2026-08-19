@@ -89,9 +89,13 @@ fn ui(f: &mut ratatui::Frame, app: &mut App) {
     let horizontal_num = 4;
     // why +1? because the first line is for title default throbber.
     let vertical_num = 1 + (all_sets.len() + horizontal_num - 1) / horizontal_num;
+    let block_row_count = 2;
+    let block_row_start = vertical_num - 1 - block_row_count;
+    let mut constraints = vec![ratatui::layout::Constraint::Length(1); vertical_num];
+    constraints[block_row_start + 1..].fill(ratatui::layout::Constraint::Length(3));
     let verticals = ratatui::layout::Layout::default()
         .direction(ratatui::layout::Direction::Vertical)
-        .constraints(&vec![ratatui::layout::Constraint::Length(1); vertical_num])
+        .constraints(constraints)
         .split(f.area());
     let default_throbber = throbber_widgets_tui::Throbber::default()
         .label("Press q to exit. This line is a default throbber (random step). The followings are incremental step.")
@@ -120,9 +124,22 @@ fn ui(f: &mut ratatui::Frame, app: &mut App) {
             app.states
                 .push(throbber_widgets_tui::ThrobberState::default());
         }
-        let throbber = throbber_widgets_tui::Throbber::default()
-            .label(name.to_string())
-            .throbber_set(set.clone());
-        f.render_stateful_widget(throbber, chunks.clone().unwrap()[col], &mut app.states[i]);
+        let throbber = throbber_widgets_tui::Throbber::default().throbber_set(set.clone());
+        let area = chunks.clone().unwrap()[col];
+        if row < block_row_start {
+            f.render_stateful_widget(throbber.label(name.to_string()), area, &mut app.states[i]);
+        } else {
+            let throbber = if row == block_row_start + block_row_count - 1 {
+                throbber.label(name.to_string())
+            } else {
+                throbber
+            };
+            let block = ratatui::widgets::Block::default()
+                .borders(ratatui::widgets::Borders::ALL)
+                .title(*name);
+            let inner = block.inner(area);
+            f.render_widget(block, area);
+            f.render_stateful_widget(throbber, inner, &mut app.states[i]);
+        }
     }
 }
